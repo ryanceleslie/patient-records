@@ -39,12 +39,12 @@ public class Patient : BaseEntity, IAggregateRoot
     }
 
     /// <summary>
-    /// This is a bit of overkill, but I wanted to show an example where my entity expect an enum
-    /// while the input is likely to be a string. This follow DDD principles where an entity in
+    /// This is a bit of overkill, but I wanted to show an example where my entity expects an enum
+    /// while the input is likely to be a string. This follows DDD principles where an entity in
     /// the core defines primitive and complex types that all implementations must follow. Normally,
     /// a string value for this property is sufficient, but it needs to follow a certain practice,
-    /// so implementing this practice through enums and conversation pushes the burden to implementation
-    /// and should encourge open/closed principles of SOLID.
+    /// so implementing this practice pushes the burden to implementation and should encourge 
+    /// open/closed principles of SOLID.
     /// </summary>
     /// <param name="genderString"></param>
     /// <returns></returns>
