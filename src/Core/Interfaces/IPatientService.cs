@@ -9,9 +9,9 @@ namespace Core.Interfaces;
 
 public interface IPatientService
 {
-    Task<Patient> CreatePatient(string firstName, string lastName, DateTime dateOfBirth, string gender);
-    Task<Patient> UpdatePatient(Patient patient);
-    Task<Patient> DeletePatient(Patient patient);
-    Task<Patient> GetById(int id);
-    Task<List<Patient>> GetAll();
+    Task<Patient> CreatePatientAsync(string firstName, string lastName, DateTime dateOfBirth, string gender);
+    Task<Patient> UpdatePatientAsync(Patient patient);
+    Task DeletePatientAsync(Patient patient);
+    Task<Patient> GetByIdAsync(int id);
+    Task<List<Patient>> GetAllAsync();
 }

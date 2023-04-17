@@ -30,6 +30,12 @@ public class Patient : BaseEntity, IAggregateRoot
     public DateTime DateOfBirth { get; private set; }
     public Gender Gender { get; private set; }
 
+    // This empty constructor is used for accessing the below internal method when converting
+    // the gender option.
+    public Patient()
+    {
+        
+    }
     public Patient(string firstName, string lastName, DateTime dateOfBirth, Gender gender)
     {
         FirstName = firstName;
