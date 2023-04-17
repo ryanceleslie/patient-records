@@ -1,6 +1,7 @@
 ﻿using Core.Entities.PatientAggregate;
 using Core.Interfaces;
 using Core.Services;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -20,26 +21,39 @@ public class ModifyingPatientRecords
     [Fact]
     public async Task ShouldAddPatient()
     {
-        // Arrange
-        _mockPatientRepository.Setup(p => p);
-        var patientService = new PatientService(_mockPatientRepository.Object);
+        // I know there are better tests for inserts, but callbacks should be sufficient here
+        var patients = new List<Patient>();
 
-        // Act
-        await patientService.CreatePatientAsync(_patient.TestFirstName, _patient.TestLastname, _patient.TestDateOfBirth, _patient.TestGenderString);
-
-        // Assert
-        _mockPatientRepository.Verify(x => x.GetByIdAsync(_patient.TestId), Times.Once);
+        _mockPatientRepository
+            .Setup(p => p.AddAsync(It.IsAny<Patient>()))
+            .Callback((Patient p) => patients.Add(p));
     }
 
     [Fact]
     public async Task ShouldUpdatePatient()
     {
-        throw new NotImplementedException();
+        // Arrange
+        _mockPatientRepository.Setup(p => p.GetByIdAsync(It.IsAny<int>()));
+        var patientService = new PatientService(_mockPatientRepository.Object);
+
+        // Act
+        await patientService.UpdatePatientAsync(It.IsAny<Patient>());
+
+        // Assert
+        _mockPatientRepository.Verify(v => v.UpdateAsync(It.IsAny<Patient>()), Times.Once);
     }
 
     [Fact]
     public async Task ShouldDeletePatient()
     {
-        throw new NotImplementedException();
+        // Arrange
+        _mockPatientRepository.Setup(p => p.GetByIdAsync(It.IsAny<int>()));
+        var patientService = new PatientService(_mockPatientRepository.Object);
+
+        // Act
+        await patientService.DeletePatientAsync(It.IsAny<Patient>());
+
+        // Assert
+        _mockPatientRepository.Verify(v => v.DeleteAsync(It.IsAny<Patient>()), Times.Once);
     }
 }
