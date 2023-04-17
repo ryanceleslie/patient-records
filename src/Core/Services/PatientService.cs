@@ -10,7 +10,7 @@ namespace Core.Services;
 
 public class PatientService : IPatientService
 {
-    public Task<Patient> CreatePatient(string firstName, string lastName, DateTime dateOfBirth, Gender gender)
+    public Task<Patient> CreatePatient(string firstName, string lastName, DateTime dateOfBirth, string gender)
     {
         throw new NotImplementedException();
     }
@@ -29,7 +29,7 @@ public class PatientService : IPatientService
         throw new NotImplementedException();
     }
 
-    public Task<Patient> GetById(string id)
+    public Task<Patient> GetById(int id)
     {
         throw new NotImplementedException();
     }

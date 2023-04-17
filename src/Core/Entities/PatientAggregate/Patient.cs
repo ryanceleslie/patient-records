@@ -65,7 +65,7 @@ public class Patient : BaseEntity, IAggregateRoot
                 break;
 
             // Using this as an example for an option of unknown or if empty/null to select
-            // an option of "unkown", this will prevent unknown nulls in the data context
+            // "unkown", this will prevent unknown nulls in the data context
             case "UK":
             default:
                 Gender = Gender.Unknown;
@@ -74,57 +74,5 @@ public class Patient : BaseEntity, IAggregateRoot
 
         return Gender;
     }
-
-    //TODO delete this
-    ///// <summary>
-    ///// In common DDD practice, the entity not only defines the fundamental properties of a class,
-    ///// but also some basic operations of those entities and sub properties. This entity will house 
-    ///// the creation of a patient due to the specific formating of DOB and Gender properties. This
-    ///// is a bit overkill as it should likely reside within the services layer, but wanted to show
-    ///// this idea as an example. Any other method that utilizes this entity will have the same 
-    ///// Add functionality instead of their own. This helps prevent duplication of effort and hunting
-    ///// down code that should be in a single place.
-    ///// </summary>
-    ///// <param name="firstName"></param>
-    ///// <param name="lastName"></param>
-    ///// <param name="dateOfBirth"></param>
-    ///// <param name="gender"></param>
-    ///// <returns></returns>
-    //public Patient AddPatient(string firstName, string lastName, DateTime dateOfBirth, string gender)
-    //{
-    //    FirstName = Guard.Against.NullOrEmpty(firstName);
-    //    LastName = Guard.Against.NullOrEmpty(lastName);
-
-    //    DateOfBirth = dateOfBirth;
-
-    //    switch (gender) 
-    //    {
-    //        case "M":
-    //            Gender = Gender.Male;
-    //            break;
-
-    //        case "F":
-    //            Gender = Gender.Female;
-    //            break;
-
-    //        case "NB":
-    //            Gender = Gender.NonBinary;
-    //            break;
-
-    //        // Using this as an example for an option of unknown or if empty/null to select
-    //        // an option of "unkown", this will prevent unknown nulls in the data context
-    //        case "UK":
-    //        default:
-    //            Gender = Gender.Unknown;
-    //            break;
-    //    }
-
-    //    // Notice I do not check to see if the patient record exists prior to creating a new one. 
-    //    // This method's functionality is just to ensure the proper construct of a patient record,
-    //    // any checks for existing data record should be done in the services area as existing
-    //    // records is not fundamental to the entity
-
-    //    return new Patient(FirstName, LastName, DateOfBirth, Gender);
-    //}
 }
 

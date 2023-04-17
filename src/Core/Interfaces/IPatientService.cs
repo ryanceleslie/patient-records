@@ -9,9 +9,9 @@ namespace Core.Interfaces;
 
 public interface IPatientService
 {
-    Task<Patient> CreatePatient(string firstName, string lastName, DateTime dateOfBirth, Gender gender);
+    Task<Patient> CreatePatient(string firstName, string lastName, DateTime dateOfBirth, string gender);
     Task<Patient> UpdatePatient(Patient patient);
     Task<Patient> DeletePatient(Patient patient);
-    Task<Patient> GetById(string id);
+    Task<Patient> GetById(int id);
     Task<List<Patient>> GetAll();
 }
