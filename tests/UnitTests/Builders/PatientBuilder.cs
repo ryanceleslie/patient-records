@@ -16,6 +16,7 @@ public class PatientBuilder
 {
     private Patient _patient;
 
+    public int TestId => 1;
     public string TestFirstName => "John";
     public string TestLastname => "Cena";
     public DateTime TestDateOfBirth = new DateTime(1977, 4, 23);
