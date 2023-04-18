@@ -71,7 +71,7 @@ public class Patient : BaseEntity, IAggregateRoot
                 break;
 
             // Using this as an example for an option of unknown or if empty/null to select
-            // "unkown", this will prevent unknown nulls in the data context
+            // "unkown", this will prevent nulls in the data context
             case "UK":
             default:
                 Gender = Gender.Unknown;

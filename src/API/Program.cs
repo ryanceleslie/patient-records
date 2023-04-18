@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using System.Reflection;
+using Core.Services;
+using Infrastructure.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,12 @@ builder.Configuration.AddEnvironmentVariables()
 // Add services to the container.
 
 builder.Services.AddDbContext<PatientRecordsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PatientRecordsConnection")));
+
+
+// Core Services and infrastructure
+builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
