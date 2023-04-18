@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<PatientRecordsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CuisenieConnection")));
+builder.Services.AddDbContext<PatientRecordsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("PatientRecordsConnection")));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddControllers();
