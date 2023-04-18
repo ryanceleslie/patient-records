@@ -3,8 +3,13 @@ using Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// using secrets for local development
+builder.Configuration.AddEnvironmentVariables()
+                     .AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 
 // Add services to the container.
 
