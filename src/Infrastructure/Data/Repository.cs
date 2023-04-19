@@ -48,7 +48,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity, IAggregateRoot
         await _context.SaveChangesAsync();
     }
 
-    public async Task<T> GetByIdAsync<Tid>(Tid id) where Tid : notnull
+    public async Task<T?> GetByIdAsync<Tid>(Tid id) where Tid : notnull
     {
         return await _context.Set<T>().FindAsync(id);
     }

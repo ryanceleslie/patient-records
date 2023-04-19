@@ -63,7 +63,7 @@ public class PatientService : IPatientService
     {
         _logger.Information("Core.Services.PatientService: GetByIdAsync()");
 
-        return await _patientRepository.GetByIdAsync(id);
+        return await _patientRepository.GetByIdAsync(id) ?? new Patient();
     }
 
     public async Task<IEnumerable<Patient>> GetAllAsync()
