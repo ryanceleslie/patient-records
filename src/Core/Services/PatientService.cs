@@ -4,6 +4,7 @@ using Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,22 +25,26 @@ public class PatientService : IPatientService
         _logger = logger;
     }
 
-    public async Task<Patient> CreatePatientAsync(string firstName, string lastName, DateTime dateOfBirth, string gender)
+    public async Task<Patient> CreatePatientAsync(Patient patient)
     {
         _logger.Information("Core.Services.PatientService: CreatePatientAsync()");
 
         // ensure that the strings are NOT null or empty, ideally this would be defined within the entity
-        // but with primitive types and strings, it's ok to have here and check for empty strings
-        Guard.Against.NullOrEmpty(firstName, nameof(firstName));
-        Guard.Against.NullOrEmpty(lastName, nameof(lastName));
-        Guard.Against.NullOrEmpty(gender, nameof(gender));
-
-        var convertedGender = new Patient().ConvertGenderString(gender);
-
-        var patient = new Patient(firstName, lastName, dateOfBirth, convertedGender);
+        // but with primitive types and strings, it's ok to have here and check for empty strings.
+        Guard.Against.NullOrEmpty(patient.FirstName, nameof(patient.FirstName));
+        Guard.Against.NullOrEmpty(patient.LastName, nameof(patient.LastName));
 
         return await _patientRepository.AddAsync(patient);
     }
+
+    public async Task<IEnumerable<Patient>> BatchPatientsAsync(IEnumerable<Patient> patients)
+    {
+        _logger.Information("Core.Services.PatientService: BatchPatientsAsync()");
+
+        return await _patientRepository.AddRangeAsync(patients);
+
+    }
+
     public async Task<Patient> UpdatePatientAsync(Patient patient)
     {
         _logger.Information("Core.Services.PatientService: UpdatePatientAsync()");
@@ -61,7 +66,7 @@ public class PatientService : IPatientService
         return await _patientRepository.GetByIdAsync(id);
     }
 
-    public async Task<List<Patient>> GetAllAsync()
+    public async Task<IEnumerable<Patient>> GetAllAsync()
     {
         _logger.Information("Core.Services.PatientService: GetAllAsync()");
 

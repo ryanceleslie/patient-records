@@ -25,13 +25,13 @@ public enum Gender
 /// </summary>
 public class Patient : BaseEntity, IAggregateRoot
 {
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
+    public string FirstName { get; private set; } = string.Empty; // As a practice, I tend to avoid nulls as much as possible, and since strings can be null, I am defining the value instead of making it a nullable type
+    public string LastName { get; private set; } = string.Empty;
     public DateTime DateOfBirth { get; private set; }
     public Gender Gender { get; private set; }
 
     // This empty constructor is used for accessing the below internal method when converting
-    // the gender option.
+    // the gender option outside of the entity.
     public Patient()
     {
         
@@ -42,6 +42,16 @@ public class Patient : BaseEntity, IAggregateRoot
         LastName = lastName;
         DateOfBirth = dateOfBirth;
         Gender = gender;
+    }
+
+    // Created an overload method to allow additional instantiation of this object with different
+    // type of parameters
+    public Patient(string firstName, string lastName, DateTime dateOfBirth, string gender)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        DateOfBirth = dateOfBirth;
+        Gender = ConvertGenderString(gender);
     }
 
     /// <summary>
@@ -56,29 +66,36 @@ public class Patient : BaseEntity, IAggregateRoot
     /// <returns></returns>
     public Gender ConvertGenderString(string genderString)
     {
-        switch (genderString)
+        Gender = genderString switch
         {
-            case "M":
-                Gender = Gender.Male;
-                break;
-
-            case "F":
-                Gender = Gender.Female;
-                break;
-
-            case "NB":
-                Gender = Gender.NonBinary;
-                break;
-
+            "M" or "Male" => Gender.Male,
+            "F" or "Female" => Gender.Female,
+            "NB" or "NonBinary" or "Non-Binary" or "Non Binary" => Gender.NonBinary,
             // Using this as an example for an option of unknown or if empty/null to select
             // "unkown", this will prevent nulls in the data context
-            case "UK":
-            default:
-                Gender = Gender.Unknown;
-                break;
-        }
-
+            "UK" or "Unkown" or _ => Gender.Unknown,
+        };
         return Gender;
+    }
+
+    /// <summary>
+    /// To maintain the consistent of the DDD patterns and best practices, entities have a private set,
+    /// which means we cannot set these property values outside of this class in other areas of the code.
+    /// And to avoid multiple forms of constructors, it's a better practice to have entity methods to
+    /// handle these operations.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="dateOfBirth"></param>
+    /// <param name="gender"></param>
+    public void UpdateRecord(int id, string firstName, string lastName, DateTime dateOfBirth, Gender gender)
+    {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
     }
 }
 

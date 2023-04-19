@@ -9,6 +9,7 @@ namespace Core.Interfaces;
 public interface IRepository<T> where T : class, IAggregateRoot
 {
     Task<T> AddAsync(T entity);
+    Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
     Task<T> UpdateAsync(T entity);
     Task DeleteAsync(T entity);
     Task<T> GetByIdAsync<Tid>(Tid id) where Tid : notnull;
@@ -17,5 +18,5 @@ public interface IRepository<T> where T : class, IAggregateRoot
     // of the collection should determine which type to use. .NET collections are notorious
     // with people misusing them or overlooking performance issues. They quickly become a
     // bottleneck for applications
-    Task<List<T>> GetAllAsync();
+    Task<IEnumerable<T>> GetAllAsync();
 }
