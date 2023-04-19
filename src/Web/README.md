@@ -1,5 +1,8 @@
 # Web
 
+| :exclamation: This does not tie into the patient records API I have built, it's the autogenerate readme from the `ng` command, I am keeping this here as a placeholder and will update later.    |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.6.
 
 ## Development server
