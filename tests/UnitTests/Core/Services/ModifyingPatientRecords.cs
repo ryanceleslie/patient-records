@@ -17,6 +17,7 @@ public class ModifyingPatientRecords
 {
     private readonly PatientBuilder _patient = new PatientBuilder();
     private readonly Mock<IRepository<Patient>> _mockPatientRepository = new(); // using the repo type's name to be consistent with usage
+    private readonly Mock<IAppLogger<Patient>> _mockLogger = new();
 
     [Fact]
     public async Task ShouldAddPatient()
@@ -34,7 +35,7 @@ public class ModifyingPatientRecords
     {
         // Arrange
         _mockPatientRepository.Setup(p => p.GetByIdAsync(It.IsAny<int>()));
-        var patientService = new PatientService(_mockPatientRepository.Object);
+        var patientService = new PatientService(_mockPatientRepository.Object, _mockLogger.Object);
 
         // Act
         await patientService.UpdatePatientAsync(It.IsAny<Patient>());
@@ -48,7 +49,7 @@ public class ModifyingPatientRecords
     {
         // Arrange
         _mockPatientRepository.Setup(p => p.GetByIdAsync(It.IsAny<int>()));
-        var patientService = new PatientService(_mockPatientRepository.Object);
+        var patientService = new PatientService(_mockPatientRepository.Object, _mockLogger.Object);
 
         // Act
         await patientService.DeletePatientAsync(It.IsAny<Patient>());
