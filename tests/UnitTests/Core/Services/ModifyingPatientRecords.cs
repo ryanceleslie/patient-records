@@ -20,7 +20,7 @@ public class ModifyingPatientRecords
     private readonly Mock<IAppLogger<Patient>> _mockLogger = new();
 
     [Fact]
-    public async Task ShouldAddPatient()
+    public void ShouldAddPatient()
     {
         // I know there are better tests for inserts, but callbacks should be sufficient here
         var patients = new List<Patient>();

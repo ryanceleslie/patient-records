@@ -12,7 +12,7 @@ public interface IRepository<T> where T : class, IAggregateRoot
     Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities);
     Task<T> UpdateAsync(T entity);
     Task DeleteAsync(T entity);
-    Task<T> GetByIdAsync<Tid>(Tid id) where Tid : notnull;
+    Task<T?> GetByIdAsync<Tid>(Tid id) where Tid : notnull;
 
     // I prefer to use different collection types for these kind of properties as the usages
     // of the collection should determine which type to use. .NET collections are notorious
