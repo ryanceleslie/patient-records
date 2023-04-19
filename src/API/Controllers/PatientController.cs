@@ -37,6 +37,9 @@ public class PatientController : ControllerBase
             _logger.Information("API.Controllers.PatientController: Get()");
             var patients = await _patientService.GetAllAsync();
 
+            // Here I am using a Response class to manipulate the data from the server as to make it more readable and less cryptic with various numbers instead of strings
+            // Again, this is another idea that should be discussed with the dev/product team on how to handle RESTful responses and their data. I lean towards making
+            // things readable by a human, but that isn't always required
             var PatientItemResponse = new List<PatientItemResponse>();
 
             foreach (var patient in patients) 

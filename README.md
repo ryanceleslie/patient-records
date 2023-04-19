@@ -9,6 +9,8 @@ The eShopOnWeb application from Microsoft recommendation architecture examples w
 
 ## Running Locally
 
+Configuration points to a database I created in Azure for testing purposes. Will move to a local SQL server running in docker, but will likely not be able to maintain state between docker builds.
+
 ## Generating Code Migrations
 
 ```powershell
