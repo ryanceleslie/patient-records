@@ -9,6 +9,8 @@ The eShopOnWeb application from Microsoft recommendation architecture examples w
 
 ## Running Locally
 
+To get started, create a database in a sql server and construct a connection string. Add that connection string to the appsettings.json file or a local secrets file.
+
 Configuration points to a database I created in Azure for testing purposes. Will move to a local SQL server running in docker, but will likely not be able to maintain state between docker builds.
 
 ## Generating Code Migrations
