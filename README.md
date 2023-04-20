@@ -20,3 +20,7 @@ Configuration points to a database I created in Azure for testing purposes. Will
 dotnet ef migrations add Initial -c Infrastructure.Data.PatientRecordsContext -p Infrastructure -s API -o Data/Migrations
 dotnet ef database update Initial -c Infrastructure.Data.PatientRecordsContext -p Infrastructure -s API
 ```
+
+## Automation
+
+This project also includes automated deployments via commits to the `main` branch in the repo. The `main` branch is protected by policy settings to force a pull request for any commit, and when the pull request is merged, their is a GitHub action that automatically builds the project, publishes it, and deploys to an Azure App Service
