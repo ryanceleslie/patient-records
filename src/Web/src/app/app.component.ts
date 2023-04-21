@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Patient } from 'src/models/patient.model';
 import { FileUploadService } from 'src/services/fileupload.services';
 
 @Component({
