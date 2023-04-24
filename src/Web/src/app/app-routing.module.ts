@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { FileUploadService } from 'src/services/fileupload.services';
+import { ConvertText } from 'src/services/converttext.service';
 
 const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [FileUploadService]
+  providers: [ConvertText]
 })
 export class AppRoutingModule { }
