@@ -7,9 +7,9 @@
   [accept]="'.csv'"
   type="file"
   class=""
-  (change)="importDataFromFile($event)"
+  (change)="importDataFromFileAndConvert($event)"
 />
 
 <div>Patient Records</div>
 
-<div *ngFor="let patient of uploadedData">{{ patient | json }}</div>
+<div *ngFor="let patient of uploadedPatientRecords">{{ patient | json }}</div>
