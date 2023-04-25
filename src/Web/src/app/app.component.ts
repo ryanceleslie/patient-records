@@ -7,7 +7,6 @@ import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
 // custom imports
 import { Patient } from 'src/models/patient.model';
 import { ConvertText } from 'src/services/converttext.service';
-import { PatientData } from 'src/services/patientdata.service';
 
 
 @Component({
@@ -17,7 +16,7 @@ import { PatientData } from 'src/services/patientdata.service';
 })
 export class AppComponent {
 
-  constructor(private _convertText: ConvertText, private _patientData: PatientData, private _httpClient: HttpClient) {}
+  constructor(private _convertText: ConvertText, private _httpClient: HttpClient) {}
 
   title = 'Patient Records CSV Upload';
 
@@ -35,7 +34,7 @@ export class AppComponent {
   // Normally, I would prefer to use a standard library to parse text from one construct to another, a library
   // like PapaParse is something that would work well, however, for the purposes of this exercise, I wrote my
   // own service class to handle this in a rudimentary form.
-  public async importDataFromFileAndConvert(event: any) {
+  public async importDataFromFile(event: any) {
     let fileText = await this.readFileContent(event);
 
     this.uploadedPatientRecords = await this._convertText.csvToJson(fileText);
@@ -51,6 +50,8 @@ export class AppComponent {
     // let patients: Array<Patient> = [];
     // patients = jsonConvert.deserializeObject(this.uploadedPatientRecords);
 
+    //TODO move this to a service and reference config
+    // Refer to heroes app from angular
     this._httpClient.post('https://patient-records.azurewebsites.net/api/patient/batch', this.uploadedPatientRecords)
     .subscribe((response) => {
       console.log(response);

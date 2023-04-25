@@ -1,3 +1,4 @@
+//TODO fix decorators, they don't work
 import { JsonObject, JsonProperty } from "json2typescript";
 
 @JsonObject("Patient")
