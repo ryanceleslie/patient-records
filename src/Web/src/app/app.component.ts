@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+// third party package imports
+import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
+
+// custom imports
 import { Patient } from 'src/models/patient.model';
 import { ConvertText } from 'src/services/converttext.service';
+import { PatientData } from 'src/services/patientdata.service';
+
 
 @Component({
   selector: 'app-root',
@@ -9,7 +17,7 @@ import { ConvertText } from 'src/services/converttext.service';
 })
 export class AppComponent {
 
-  constructor(private _convertText: ConvertText) {}
+  constructor(private _convertText: ConvertText, private _patientData: PatientData, private _httpClient: HttpClient) {}
 
   title = 'Patient Records CSV Upload';
 
@@ -30,6 +38,23 @@ export class AppComponent {
   public async importDataFromFileAndConvert(event: any) {
     let fileText = await this.readFileContent(event);
 
-    this.uploadedPatientRecords = this._convertText.concertCsvToJson(fileText);
+    this.uploadedPatientRecords = await this._convertText.csvToJson(fileText);
+
+    //TODO move to another method/service
+    // Choose your settings
+    // Check the detailed reference in the chapter "JsonConvert class properties and methods"
+    let jsonConvert: JsonConvert = new JsonConvert();
+    jsonConvert.operationMode = OperationMode.LOGGING; // print some debug data
+    jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
+    jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL // never allow null
+
+    // let patients: Array<Patient> = [];
+    // patients = jsonConvert.deserializeObject(this.uploadedPatientRecords);
+
+    this._httpClient.post('https://patient-records.azurewebsites.net/api/patient/batch', this.uploadedPatientRecords)
+    .subscribe((response) => {
+      console.log(response);
+    });
+
   }
 }
