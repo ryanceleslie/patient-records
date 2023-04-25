@@ -1,5 +1,5 @@
 export class ConvertText {
-    public concertCsvToJson(csvText: string){
+    public async csvToJson(csvText: string){
         
         // this may cause some troubles depending on how the csv file was initially created. The \n
         // operand should work fine, but some programs add \r as well. Ideally there would be checks

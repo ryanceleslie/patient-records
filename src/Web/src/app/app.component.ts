@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
 import { Patient } from 'src/models/patient.model';
 import { ConvertText } from 'src/services/converttext.service';
+import { PatientData } from 'src/services/patientdata.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +12,7 @@ import { ConvertText } from 'src/services/converttext.service';
 })
 export class AppComponent {
 
-  constructor(private _convertText: ConvertText) {}
+  constructor(private _convertText: ConvertText, private _patientData: PatientData, private _httpClient: HttpClient) {}
 
   title = 'Patient Records CSV Upload';
 
@@ -27,9 +30,17 @@ export class AppComponent {
   // Normally, I would prefer to use a standard library to parse text from one construct to another, a library
   // like PapaParse is something that would work well, however, for the purposes of this exercise, I wrote my
   // own service class to handle this in a rudimentary form.
-  public async importDataFromFileAndConvert(event: any) {
+  public async importDataFromFileAndPost(event: any) {
     let fileText = await this.readFileContent(event);
 
-    this.uploadedPatientRecords = this._convertText.concertCsvToJson(fileText);
+    let mappedHeaders = await this._patientData.convertHeaders(fileText);
+
+    this.uploadedPatientRecords = await this._convertText.csvToJson(mappedHeaders);
+
+    this._httpClient.post('https://patient-records.azurewebsites.net/api/patient/batch', this.uploadedPatientRecords)
+    .subscribe((response) => {
+      console.log(response);
+    });
+
   }
 }
