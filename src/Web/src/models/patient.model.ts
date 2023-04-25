@@ -15,9 +15,6 @@ export class Patient {
     @JsonProperty("Gender")
     public gender: string;
 
-    /**
-     *
-     */
     constructor(first: string, last: string, dob: Date, gender: string) {
         this.firstName = first;
         this.lastName = last;

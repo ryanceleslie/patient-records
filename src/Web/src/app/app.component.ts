@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs'
 
 // third party package imports
 import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
 
 // custom imports
 import { Patient } from 'src/models/patient.model';
+import { PatientService } from 'src/services/patient.service';
 import { ConvertText } from 'src/services/converttext.service';
 
 
@@ -14,13 +16,19 @@ import { ConvertText } from 'src/services/converttext.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  existingpatients: Patient[] = [];
+  public uploadedPatientRecords: Array<Patient> = [];
 
-  constructor(private _convertText: ConvertText, private _httpClient: HttpClient) {}
+  constructor(private _patientService: PatientService, private _convertText: ConvertText, private _httpClient: HttpClient) {}
+
+  ngOnInit() {
+    // load existing patient records
+    this._patientService.getPatientRecords()
+      .subscribe(patients => (this.existingpatients = patients));
+  }
 
   title = 'Patient Records CSV Upload';
-
-  public uploadedPatientRecords: Array<Patient> = [];
 
   // since javascript is, in general, a procedural language, I tend to put my methods first before being called
   // in other methods. I know that TypeScript will handle building the files and injecting them into the dumb,
@@ -39,23 +47,28 @@ export class AppComponent {
 
     this.uploadedPatientRecords = await this._convertText.csvToJson(fileText);
 
-    //TODO move to another method/service
-    // Choose your settings
-    // Check the detailed reference in the chapter "JsonConvert class properties and methods"
-    let jsonConvert: JsonConvert = new JsonConvert();
-    jsonConvert.operationMode = OperationMode.LOGGING; // print some debug data
-    jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
-    jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL // never allow null
+    this._patientService.postBatchPatientRecords(this.uploadedPatientRecords)
+      .subscribe((response) => {
+        console.log(response);
+      });
 
-    // let patients: Array<Patient> = [];
-    // patients = jsonConvert.deserializeObject(this.uploadedPatientRecords);
+    // //TODO move to another method/service
+    // // Choose your settings
+    // // Check the detailed reference in the chapter "JsonConvert class properties and methods"
+    // let jsonConvert: JsonConvert = new JsonConvert();
+    // jsonConvert.operationMode = OperationMode.LOGGING; // print some debug data
+    // jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
+    // jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL // never allow null
 
-    //TODO move this to a service and reference config
-    // Refer to heroes app from angular
-    this._httpClient.post('https://patient-records.azurewebsites.net/api/patient/batch', this.uploadedPatientRecords)
-    .subscribe((response) => {
-      console.log(response);
-    });
+    // // let patients: Array<Patient> = [];
+    // // patients = jsonConvert.deserializeObject(this.uploadedPatientRecords);
+
+    // //TODO move this to a service and reference config
+    // // Refer to heroes app from angular
+    // this._httpClient.post('https://patient-records.azurewebsites.net/api/patient/batch', this.uploadedPatientRecords)
+    // .subscribe((response) => {
+    //   console.log(response);
+    // });
 
   }
 }
