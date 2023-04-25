@@ -22,6 +22,23 @@ export class ConvertText {
             var currentline = lines[i].split(",");
 
             for (var j = 0; j < headers.length; j++) {
+
+                //TODO get this out of here
+                switch (headers[j]) {
+                    case "First Name":
+                        headers[j] = "firstName";
+                        break;
+                    case "Last Name":
+                        headers[j] = "lastName";
+                        break;
+                    case "Birthday":
+                        headers[j] = "dateOfBirth";
+                        break;
+                    case "Gender":
+                        headers[j] = "gender";
+                        break;
+                }
+
                 obj[headers[j]] = currentline[j];
             }    
     
