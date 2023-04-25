@@ -13,6 +13,8 @@ To get started, create a database in a sql server and construct a connection str
 
 Configuration points to a database I created in Azure for testing purposes. Will move to a local SQL server running in docker, but will likely not be able to maintain state between docker builds.
 
+Furthermore, the API App also allows CORS from any source as the initial application of this does not have security enabled. A bearer token, or OAuth, will likely be set for future use, but for now it's open.
+
 ## Generating Code Migrations
 
 ```powershell
