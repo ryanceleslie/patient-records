@@ -3,6 +3,8 @@ import { JsonObject, JsonProperty } from "json2typescript";
 
 @JsonObject("Patient")
 export class Patient {
+    public id: number;
+
     @JsonProperty("First Name")
     public firstName: string;
     
@@ -15,7 +17,8 @@ export class Patient {
     @JsonProperty("Gender")
     public gender: string;
 
-    constructor(first: string, last: string, dob: Date, gender: string) {
+    constructor(id: number, first: string, last: string, dob: Date, gender: string) {
+        this.id = id;
         this.firstName = first;
         this.lastName = last;
         this.dateOfBirth = dob;

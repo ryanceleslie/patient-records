@@ -18,7 +18,8 @@ import { ConvertTextService } from 'src/services/converttext.service';
 })
 export class AppComponent implements OnInit {
   existingpatients: Patient[] = [];
-  public uploadedPatientRecords: Array<Patient> = [];
+  public uploadedPatientRecords: Patient[] = [];
+  public toggleReponseVisibilty: boolean = false;
 
   constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {}
 
@@ -26,9 +27,9 @@ export class AppComponent implements OnInit {
     // load existing patient records
     this._patientService.getPatientRecords()
       .subscribe(patients => (this.existingpatients = patients));
-  }
 
-  title = 'Patient Records CSV Upload';
+      var temp = this.existingpatients;
+  }
 
   // since javascript is, in general, a procedural language, I tend to put my methods first before being called
   // in other methods. I know that TypeScript will handle building the files and injecting them into the dumb,
@@ -51,15 +52,22 @@ export class AppComponent implements OnInit {
     var convertedJson = await this._convertTextService.csvToJson(fileText);
 
     this._patientService.postBatchPatientRecords(convertedJson)
-      .subscribe((response) => {
+      .subscribe(response => {
 
         // Setting the response data into the display table for data just entered instead of the data pulled
         // from the csv file. This confirms that it's data from the post response, not prior.
         this.uploadedPatientRecords = response;
 
+        // Display the response div
+        this.toggleReponseVisibilty = true;
+
         // reload the existing patient records
         this._patientService.getPatientRecords()
           .subscribe(patients => (this.existingpatients = patients));
       });
+  }
+
+  public async updatePatient(event: any){
+    return null;
   }
 }
