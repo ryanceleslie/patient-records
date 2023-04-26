@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 
-// third party package imports
-import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
+// Material Imports
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
-// custom imports
+// Custom Imports
 import { Patient } from 'src/models/patient.model';
 import { PatientService } from 'src/services/patient.service';
 import { ConvertTextService } from 'src/services/converttext.service';
@@ -16,19 +18,25 @@ import { ConvertTextService } from 'src/services/converttext.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  existingpatients: Patient[] = [];
+export class AppComponent implements AfterViewInit {
+  public existingpatients: Patient[] = [];
   public uploadedPatientRecords: Patient[] = [];
   public toggleReponseVisibilty: boolean = false;
 
-  constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {}
+  public existingPatients!: MatTableDataSource<Patient>;
+  public displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'gender', 'id'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  ngOnInit() {
-    // load existing patient records
+  constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {
+    // load existing patient records      
     this._patientService.getPatientRecords()
-      .subscribe(patients => (this.existingpatients = patients));
+      .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
+  }
 
-      var temp = this.existingpatients;
+  ngAfterViewInit() {
+    this.existingPatients.paginator = this.paginator;
+    this.existingPatients.sort = this.sort;
   }
 
   // since javascript is, in general, a procedural language, I tend to put my methods first before being called
@@ -63,11 +71,20 @@ export class AppComponent implements OnInit {
 
         // reload the existing patient records
         this._patientService.getPatientRecords()
-          .subscribe(patients => (this.existingpatients = patients));
+          .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
       });
   }
 
   public async updatePatient(event: any){
     return null;
+  }
+
+  public async applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.existingPatients.filter = filterValue.trim().toLowerCase();
+    
+    if (this.existingPatients.paginator) {
+      this.existingPatients.paginator.firstPage();
+    }
   }
 }
