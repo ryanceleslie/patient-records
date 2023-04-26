@@ -44,6 +44,15 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+// change this setting in Azure CORS for the app policy
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(builder =>
+    builder.WithOrigins("*")
+    .AllowAnyHeader()
+    .AllowAnyMethod());
+}
+
 app.UseAuthorization();
 
 app.MapControllers();

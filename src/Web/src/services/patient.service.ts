@@ -14,6 +14,7 @@ import { Patient } from "src/models/patient.model";
 
 export class PatientService {
   private url = 'https://patient-records.azurewebsites.net/';
+  //private url = 'https://localhost:7271/';
 
   constructor(private _http: HttpClient) {}
 
@@ -22,7 +23,7 @@ export class PatientService {
   }
 
   postBatchPatientRecords(patients: Array<Patient>): Observable<any> {
-    return this._http.post(this.url + '/api/patient/batch', patients);
+    return this._http.post(this.url + 'api/patient/batch', patients);
   }
 
   // this could be a utility to use elsewhere in the project and something I could move to a custom

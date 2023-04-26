@@ -8,7 +8,7 @@ import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
 // custom imports
 import { Patient } from 'src/models/patient.model';
 import { PatientService } from 'src/services/patient.service';
-import { ConvertText } from 'src/services/converttext.service';
+import { ConvertTextService } from 'src/services/converttext.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   existingpatients: Patient[] = [];
   public uploadedPatientRecords: Array<Patient> = [];
 
-  constructor(private _patientService: PatientService, private _convertText: ConvertText, private _httpClient: HttpClient) {}
+  constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {}
 
   ngOnInit() {
     // load existing patient records
@@ -45,30 +45,21 @@ export class AppComponent implements OnInit {
   public async importDataFromFile(event: any) {
     let fileText = await this.readFileContent(event);
 
-    this.uploadedPatientRecords = await this._convertText.csvToJson(fileText);
+    // I generally create single-use variables when trying to make readable code. In this case, I didn't want
+    // to put pass an await on a method as a parameter into the patient service. It would make the code a little
+    // more challenging to read
+    var convertedJson = await this._convertTextService.csvToJson(fileText);
 
-    this._patientService.postBatchPatientRecords(this.uploadedPatientRecords)
+    this._patientService.postBatchPatientRecords(convertedJson)
       .subscribe((response) => {
-        console.log(response);
+
+        // Setting the response data into the display table for data just entered instead of the data pulled
+        // from the csv file. This confirms that it's data from the post response, not prior.
+        this.uploadedPatientRecords = response;
+
+        // reload the existing patient records
+        this._patientService.getPatientRecords()
+          .subscribe(patients => (this.existingpatients = patients));
       });
-
-    // //TODO move to another method/service
-    // // Choose your settings
-    // // Check the detailed reference in the chapter "JsonConvert class properties and methods"
-    // let jsonConvert: JsonConvert = new JsonConvert();
-    // jsonConvert.operationMode = OperationMode.LOGGING; // print some debug data
-    // jsonConvert.ignorePrimitiveChecks = false; // don't allow assigning number to string etc.
-    // jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL // never allow null
-
-    // // let patients: Array<Patient> = [];
-    // // patients = jsonConvert.deserializeObject(this.uploadedPatientRecords);
-
-    // //TODO move this to a service and reference config
-    // // Refer to heroes app from angular
-    // this._httpClient.post('https://patient-records.azurewebsites.net/api/patient/batch', this.uploadedPatientRecords)
-    // .subscribe((response) => {
-    //   console.log(response);
-    // });
-
   }
 }
