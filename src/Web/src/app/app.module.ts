@@ -9,8 +9,8 @@ import { AppComponent } from './app.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // custom classes
@@ -28,9 +28,10 @@ import { PatientService } from 'src/services/patient.service';
     MatTableModule,
     MatInputModule,
     MatFormFieldModule,
-    MatPaginatorModule,
     MatSortModule,
-    BrowserAnimationsModule
+    MatPaginatorModule,
+    //TODO ading this module breaks sorting for some reason
+    //BrowserAnimationsModule
   ],
   providers: [ConvertTextService, PatientService],
   bootstrap: [AppComponent]

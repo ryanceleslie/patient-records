@@ -1,14 +1,13 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 
 // Material Imports
 import { MatTableDataSource } from '@angular/material/table';
-import { MatFormField } from '@angular/material/form-field';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
-// custom imports
+// Custom Imports
 import { Patient } from 'src/models/patient.model';
 import { PatientService } from 'src/services/patient.service';
 import { ConvertTextService } from 'src/services/converttext.service';
@@ -19,13 +18,14 @@ import { ConvertTextService } from 'src/services/converttext.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements AfterViewInit {
   public existingpatients: Patient[] = [];
   public uploadedPatientRecords: Patient[] = [];
   public toggleReponseVisibilty: boolean = false;
 
   public existingPatients!: MatTableDataSource<Patient>;
   public displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'gender', 'id'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {
@@ -34,13 +34,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
   }
 
-  ngOnInit() {
-    // load existing patient records      
-    // this._patientService.getPatientRecords()
-    //   .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
-  }
-
   ngAfterViewInit() {
+    this.existingPatients.paginator = this.paginator;
     this.existingPatients.sort = this.sort;
   }
 
@@ -87,5 +82,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   public async applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.existingPatients.filter = filterValue.trim().toLowerCase();
+    
+    if (this.existingPatients.paginator) {
+      this.existingPatients.paginator.firstPage();
+    }
   }
 }

@@ -4,7 +4,7 @@ import { Observable, throwError } from "rxjs";
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
-// custom imports
+// Custom Imports
 import { Patient } from "src/models/patient.model";
 
 
