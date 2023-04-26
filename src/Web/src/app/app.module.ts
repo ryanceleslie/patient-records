@@ -30,7 +30,7 @@ import { PatientService } from 'src/services/patient.service';
     MatFormFieldModule,
     MatSortModule,
     MatPaginatorModule,
-    //TODO ading this module breaks sorting for some reason
+    //TODO ading this module breaks sorting and paging for some reason
     //BrowserAnimationsModule
   ],
   providers: [ConvertTextService, PatientService],
