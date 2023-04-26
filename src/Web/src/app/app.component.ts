@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 
@@ -19,27 +19,29 @@ import { ConvertTextService } from 'src/services/converttext.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   public existingpatients: Patient[] = [];
   public uploadedPatientRecords: Patient[] = [];
   public toggleReponseVisibilty: boolean = false;
 
   public existingPatients!: MatTableDataSource<Patient>;
   public displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'gender', 'id'];
+  @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {}
-
-  ngOnInit() {
-    // load existing patient records
-    //TODO cleanup
-    this._patientService.getPatientRecords()
-      .subscribe(patients => (this.existingpatients = patients));
-
-      
+  constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {
+    // load existing patient records      
     this._patientService.getPatientRecords()
       .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
+  }
 
-      var temp = this.existingpatients;
+  ngOnInit() {
+    // load existing patient records      
+    // this._patientService.getPatientRecords()
+    //   .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
+  }
+
+  ngAfterViewInit() {
+    this.existingPatients.sort = this.sort;
   }
 
   // since javascript is, in general, a procedural language, I tend to put my methods first before being called
@@ -74,7 +76,7 @@ export class AppComponent implements OnInit {
 
         // reload the existing patient records
         this._patientService.getPatientRecords()
-          .subscribe(patients => (this.existingpatients = patients));
+          .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
       });
   }
 

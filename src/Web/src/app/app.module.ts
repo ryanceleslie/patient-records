@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // custom classes
 import { ConvertTextService } from 'src/services/converttext.service';
@@ -29,7 +29,8 @@ import { PatientService } from 'src/services/patient.service';
     MatInputModule,
     MatFormFieldModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    BrowserAnimationsModule
   ],
   providers: [ConvertTextService, PatientService],
   bootstrap: [AppComponent]
