@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 
-// third party package imports
-import { JsonConvert, OperationMode, ValueCheckingMode } from 'json2typescript';
+// Material Imports
+import { MatTableDataSource } from '@angular/material/table';
+import { MatFormField } from '@angular/material/form-field';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 // custom imports
 import { Patient } from 'src/models/patient.model';
@@ -17,16 +20,24 @@ import { ConvertTextService } from 'src/services/converttext.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  existingpatients: Patient[] = [];
+  public existingpatients: Patient[] = [];
   public uploadedPatientRecords: Patient[] = [];
   public toggleReponseVisibilty: boolean = false;
+
+  public existingPatients!: MatTableDataSource<Patient>;
+  public displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'gender'];
 
   constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {}
 
   ngOnInit() {
     // load existing patient records
+    //TODO cleanup
     this._patientService.getPatientRecords()
       .subscribe(patients => (this.existingpatients = patients));
+
+      
+    this._patientService.getPatientRecords()
+      .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
 
       var temp = this.existingpatients;
   }
@@ -69,5 +80,10 @@ export class AppComponent implements OnInit {
 
   public async updatePatient(event: any){
     return null;
+  }
+
+  public async applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.existingPatients.filter = filterValue.trim().toLowerCase();
   }
 }
