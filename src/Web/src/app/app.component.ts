@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
   public toggleReponseVisibilty: boolean = false;
 
   public existingPatients!: MatTableDataSource<Patient>;
-  public displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'gender'];
+  public displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'gender', 'id'];
 
   constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {}
 
