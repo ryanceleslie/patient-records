@@ -5,6 +5,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// custom classes
+import { ConvertTextService } from 'src/services/converttext.service';
+import { PatientService } from 'src/services/patient.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -14,7 +18,7 @@ import { AppComponent } from './app.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ConvertTextService, PatientService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

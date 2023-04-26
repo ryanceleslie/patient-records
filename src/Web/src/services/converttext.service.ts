@@ -1,4 +1,4 @@
-export class ConvertText {
+export class ConvertTextService {
     public async csvToJson(csvText: string){
         
         // this may cause some troubles depending on how the csv file was initially created. The \n
@@ -32,7 +32,9 @@ export class ConvertText {
                         headers[j] = "lastName";
                         break;
                     case "Birthday":
+                    case "dateOfBirth":
                         headers[j] = "dateOfBirth";
+                        currentline[j] = new Date(currentline[j]).toJSON();
                         break;
                     case "Gender":
                         headers[j] = "gender";

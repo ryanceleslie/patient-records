@@ -80,7 +80,7 @@ public class PatientController : ControllerBase
     {
         try
         {
-            // guarading against empty strings/inputs
+            // guarding against empty strings/inputs
             Guard.Against.NullOrEmpty(patientItemRequest.FirstName, nameof(patientItemRequest.FirstName));
             Guard.Against.NullOrEmpty(patientItemRequest.LastName, nameof(patientItemRequest.LastName));
             Guard.Against.NullOrEmpty(patientItemRequest.Gender, nameof(patientItemRequest.Gender));

@@ -30,7 +30,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// This is commented out to allow swagger docs in "Release" configruation. This is absolutely a security 
+// This is commented out to allow swagger docs in "Release" configuration. This is absolutely a security 
 // risk as it exposes my endpoints but I still want to test these endpoints in the app service on Azure.
 //// Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -43,6 +43,15 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+// change this setting in Azure CORS for the app policy
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(builder =>
+    builder.WithOrigins("*")
+    .AllowAnyHeader()
+    .AllowAnyMethod());
+}
 
 app.UseAuthorization();
 

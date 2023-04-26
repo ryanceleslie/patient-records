@@ -1,15 +1,147 @@
+<div>
+  <h1 class="mb-4 text-4xl p-5 font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">
+    Patient Records Database
+  </h1>
+  <p class="mb-6 text-lg p-5 font-normal text-gray-500 lg:text-xl">
+    This application showcases patient records pulled from a REST API while allowing for editing of data and bulk upload
+    from a csv file. To get started with the bulk upload, choose a .csv file of preformatted data
+  </p>
+</div>
 
+<input #fileUploadInputField label="Upload Patient Data" [accept]="'.csv'" type="file"
+  class="inline-flex items-center justify-center px-5 py-3 sm:px-16 text-base font-medium text-center"
+  (change)="importDataFromFile($event)" />
 
-<div>Import Patient Records From .CSV File</div>
+<div class="relative overflow-x-auto">
 
-<input
-  #fileUploadInputField
-  [accept]="'.csv'"
-  type="file"
-  class=""
-  (change)="importDataFromFileAndConvert($event)"
-/>
+  <div class="p-5 text-lg font-semibold text-left" *ngIf="toggleReponseVisibilty">
+    Here is the data that was imported into the system
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs bg-gray-50">
+          <th scope="col" class="px-6 py-3">First Name</th>
+          <th scope="col" class="px-6 py-3">Last Name</th>
+          <th scope="col" class="px-6 py-3">Date of Birth</th>
+          <th scope="col" class="px-6 py-3">Gender</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of uploadedPatientRecords">
+            <td class="px-6 py-4">{{ patient.firstName }}</td>
+            <td class="px-6 py-4">{{ patient.lastName }}</td>
+            <td class="px-6 py-4">{{ patient.dateOfBirth | date: 'M/dd/yyyy' }}</td>
+            <td class="px-6 py-4">{{ patient.gender }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<div>Patient Records</div>
+  <div class="p-5 text-lg font-semibold text-left">
+    Existing Patient Records
+  </div>
 
-<div *ngFor="let patient of uploadedPatientRecords">{{ patient | json }}</div>
+  <div class="p-5 relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left text-gray-500">
+      <thead class="text-xs bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3">
+            First Name
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Last Name
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Date of Birth
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Gender
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Action
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-white border-b hover:bg-gray-50" *ngFor="let patient of existingpatients">
+          <td class="px-6 py-4">id - {{ patient.id }} {{ patient.firstName }}</td>
+          <td class="px-6 py-4">{{ patient.lastName }}</td>
+          <td class="px-6 py-4">{{ patient.dateOfBirth | date: 'M/dd/yyyy' }}</td>
+          <td class="px-6 py-4">{{ patient.gender }}</td>
+          <td class="px-6 py-4">
+            <!-- Modal toggle -->
+            <a href="#" type="button" data-modal-target="editPatientModal" data-modal-show="editPatientModal"
+              class="font-medium text-blue-600 hover:underline">Edit user</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Edit user modal -->
+    <div id="editPatientModal" tabindex="-1" aria-hidden="true"
+      class="fixed top-0 left-0 right-0 z-50 items-center justify-center hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <form action="#" class="relative bg-white rounded-lg shadow">
+          <!-- Modal header -->
+          <div class="flex items-start justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900ed">
+              Edit user
+            </h3>
+            <button type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              data-modal-hide="editPatientModal">
+              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="p-6 space-y-6">
+            <div class="grid grid-cols-6 gap-6">
+              <div class="col-span-6 sm:col-span-3">
+                <label for="first-name" class="block mb-2 text-sm font-medium text-gray-900ed">
+                  First Name
+                </label>
+                <input type="text" name="first-name" id="first-name"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                  placeholder="Bonnie" required="">
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="last-name" class="block mb-2 text-sm font-medium text-gray-900ed">
+                  Last Name
+                </label>
+                <input type="text" name="last-name" id="last-name"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                  placeholder="Green" required="">
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="dateOfBirth" class="block mb-2 text-sm font-medium text-gray-900ed">Date of Birth</label>
+                <input type="dateOfBirth" name="dateOfBirth" id="dateOfBirth"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                  placeholder="3/22/2022" required="">
+              </div>
+              <div class="col-span-6 sm:col-span-3">
+                <label for="gender" class="block mb-2 text-sm font-medium text-gray-900ed">
+                  Gender
+                </label>
+                <input type="text" name="gender" id="gender"
+                  class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                  placeholder="F" required="">
+              </div>
+            </div>
+          </div>
+          <!-- Modal footer -->
+          <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+            <button type="submit"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              Save Patient
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
