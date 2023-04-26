@@ -22,8 +22,14 @@ export class PatientService {
     return this._http.get<Patient[]>(this.url + 'api/patient').pipe(catchError(this.handleError));
   }
 
-  postBatchPatientRecords(patients: Array<Patient>): Observable<any> {
-    return this._http.post(this.url + 'api/patient/batch', patients);
+  //TODO typecase the response to complex type instead of any
+  postBatchPatientRecords(patients: Patient[]): Observable<any> {
+    return this._http.post(this.url + 'api/patient/batch', patients).pipe(catchError(this.handleError));
+  }
+
+  editPatientRecord(patient: Patient): Observable<Patient> {
+    //TODO add code for this
+    return new Observable<Patient>;
   }
 
   // this could be a utility to use elsewhere in the project and something I could move to a custom
