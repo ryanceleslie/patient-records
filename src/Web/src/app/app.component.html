@@ -4,19 +4,19 @@
   </h1>
   <p class="mb-6 text-lg p-5 font-normal text-gray-500 lg:text-xl">
     This application showcases patient records pulled from a REST API while allowing for editing of data and bulk upload
-    from a csv file. To get started with the bulk upload, choose a .csv file of preformatted data, here is an example 
+    from a csv file. To get started with the bulk upload, choose a .csv file of preformatted data, here is an example
     file to use: <a href="/assets/Patients.csv">Patients.csv</a>
   </p>
 </div>
 
 <form>
-<input #fileUploadInputField label="Upload Patient Data" [accept]="'.csv'" type="file"
-  class="inline-flex items-center justify-center px-5 py-3 sm:px-16 text-base font-medium text-center"
-  (change)="importDataFromFile($event)" />
+  <input #fileUploadInputField id="fileUploadInputField" label="Upload Patient Data" [accept]="'.csv'" type="file"
+    class="inline-flex items-center justify-center px-5 py-3 sm:px-16 text-base font-medium text-center"
+    (change)="importDataFromFile(fileUploadInputField)" />
 </form>
 
 <div class="relative overflow-x-auto">
-  
+
   <div class="p-5 text-lg font-semibold text-left" *ngIf="toggleErrorReponseVisibilty">
     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
       <strong class="font-bold">Error!</strong>
@@ -61,7 +61,9 @@
     Existing Patient Records
 
     <blockquote class="my-2 text-sm text-gray-400 font-normal">
-      Please note, the data may take a second to load otherwise you'll have to refresh the page if you do not see any data below. I am using the least costly Azure DB services that go idle when not in use, so it may take a minute to spool up for the first time after a while
+      Please note, the data may take a second to load otherwise you'll have to refresh the page if you do not see any
+      data below. I am using the least costly Azure DB services that go idle when not in use, so it may take a minute to
+      spool up for the first time after a while
     </blockquote>
   </div>
 
@@ -70,27 +72,27 @@
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Clark" #input>
     </mat-form-field>
-    
+
     <table mat-table [dataSource]="existingPatients" class="w-full text-sm text-left text-gray-500" matSort>
-    
+
       <!-- firstName Column -->
       <ng-container matColumnDef="firstName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
         <td mat-cell *matCellDef="let patient"> {{ patient.firstName }} </td>
       </ng-container>
-    
+
       <!-- lastName Column -->
       <ng-container matColumnDef="lastName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
         <td mat-cell *matCellDef="let patient"> {{ patient.lastName }} </td>
       </ng-container>
-    
+
       <!-- dateOfBirth Column -->
       <ng-container matColumnDef="dateOfBirth">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Birthday </th>
         <td mat-cell *matCellDef="let patient"> {{ patient.dateOfBirth | date: 'M/dd/yyyy' }} </td>
       </ng-container>
-    
+
       <!-- gender Column -->
       <ng-container matColumnDef="gender">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
@@ -109,16 +111,16 @@
           <mat-icon (click)="editPatient(patient)">edit</mat-icon>
         </td>
       </ng-container>
-    
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
+
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
       </tr>
     </table>
-    
+
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of patients"></mat-paginator>
   </div>
 

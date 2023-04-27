@@ -50,19 +50,12 @@ export class AppComponent {
       });
   }
 
-  public async resetResponse() {
-    // Reset responses
-    this.uploadedPatientRecords = [];
-    this.toggleErrorReponseVisibilty = false;
-    this.toggleReponseVisibilty = false;
-    this.responseMessage = "";
-  }
-
   // since javascript is, in general, a procedural language, I tend to put my methods first before being called
-  // in other methods. I know that TypeScript will handle building the files and injecting them into the dumb,
+  // in other methods. I know that TypeScript will handle building the files and injecting them into the DOM,
   // but old habits are hard to break.
   public async readFileContent(event: any) {
-    const file: File = event.target.files[0];
+    //const file: File = event.target.files[0];
+    const file: File = event.files[0];
 
     return await file.text();
   }
@@ -70,16 +63,15 @@ export class AppComponent {
   // Normally, I would prefer to use a standard library to parse text from one construct to another, a library
   // like PapaParse is something that would work well, however, for the purposes of this exercise, I wrote my
   // own service class to handle this in a rudimentary form.
-  public async importDataFromFile(event: any) {
-    let fileText = await this.readFileContent(event);
+  public async importDataFromFile(input: HTMLInputElement) {
+    let fileText = await this.readFileContent(input);
 
     // I generally create single-use variables when trying to make readable code. In this case, I didn't want
     // to pass an await on a method as a parameter into the patient service. It would make the code a little
     // more challenging to read
     var convertedJson = await this._convertTextService.csvToJson(fileText);
 
-    //TODO I think I need to remove this response reset and make it an observable?
-    await this.resetResponse().then(() => {
+    try {
       if (convertedJson.hasOwnProperty("Error")) {
         // Display the error response div
         this.toggleErrorReponseVisibilty = true;
@@ -106,9 +98,9 @@ export class AppComponent {
               });
           });
       }
-    });
-
-
+    } finally {
+      input.value = '';
+    }
   }
 
   public async editPatient(patient: Patient) {
