@@ -22,13 +22,17 @@ export class ConvertTextService {
             var currentline = lines[i].split(",");
 
             for (var j = 0; j < headers.length; j++) {
+                //TODO check for strings or dates
 
                 //TODO get this out of here
+                // validate input here
                 switch (headers[j]) {
                     case "First Name":
+                    case "firstName":
                         headers[j] = "firstName";
                         break;
                     case "Last Name":
+                    case "lastName":
                         headers[j] = "lastName";
                         break;
                     case "Birthday":
@@ -37,8 +41,13 @@ export class ConvertTextService {
                         currentline[j] = new Date(currentline[j]).toJSON();
                         break;
                     case "Gender":
+                    case "gender":
                         headers[j] = "gender";
                         break;
+                    default:
+                        let errorObj: any = new Object();
+                        errorObj["Error"] = "Upload failed for reason: Bad header - '" + headers[j].toString() + "'";
+                        return errorObj;
                 }
 
                 obj[headers[j]] = currentline[j];
