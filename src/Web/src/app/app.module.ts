@@ -31,7 +31,7 @@ import { PatientService } from 'src/services/patient.service';
     MatSortModule,
     MatPaginatorModule,
     //TODO ading this module breaks sorting and paging for some reason
-    //BrowserAnimationsModule
+    BrowserAnimationsModule
   ],
   providers: [ConvertTextService, PatientService],
   bootstrap: [AppComponent]

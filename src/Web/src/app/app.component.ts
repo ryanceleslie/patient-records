@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs'
 
@@ -18,7 +18,9 @@ import { ConvertTextService } from 'src/services/converttext.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent {
+  title = "Patient Records Database";
+
   public existingpatients: Patient[] = [];
   public uploadedPatientRecords: Patient[] = [];
   public toggleReponseVisibilty: boolean = false;
@@ -31,12 +33,15 @@ export class AppComponent implements AfterViewInit {
   constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {
     // load existing patient records      
     this._patientService.getPatientRecords()
-      .subscribe(patients => (this.existingPatients = new MatTableDataSource<Patient>(patients)));
-  }
-
-  ngAfterViewInit() {
-    this.existingPatients.paginator = this.paginator;
-    this.existingPatients.sort = this.sort;
+      .subscribe(patients => {
+        this.existingPatients = new MatTableDataSource<Patient>(patients);
+        
+        // Material's documentation has this in the ngAfterViewInit but the paginator and sort properties would be null or empty
+        // this only works in the constructor, which makes sense given that this should happen after the data is populated into
+        // the data table
+        this.existingPatients.paginator = this.paginator;
+        this.existingPatients.sort = this.sort;
+      });
   }
 
   // since javascript is, in general, a procedural language, I tend to put my methods first before being called
