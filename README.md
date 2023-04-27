@@ -27,4 +27,4 @@ dotnet ef database update Initial -c Infrastructure.Data.PatientRecordsContext -
 
 ## Automation
 
-This project also includes automated deployments via commits to the `main` branch in the repo. The `main` branch is protected by policy settings to force a pull request for any commit, and when the pull request is merged, their is a GitHub action that automatically builds the project, publishes it, and deploys to an Azure App Service
+This project also includes automated deployments via commits to the `main` branch in the repo. The `main` branch is protected by policy settings to force a pull request for any commit, and when the pull request is merged, there are two GitHub actions that automatically builds the solutions, publishes and deploys both projects to individual an Azure Services.
