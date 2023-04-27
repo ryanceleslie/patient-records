@@ -54,6 +54,8 @@ export class AppComponent {
   // but old habits are hard to break.
   public async readFileContent(event: any){
     const file: File = event.target.files[0];
+
+    //TODO Validate file upload input here
     
     return await file.text();
   }
