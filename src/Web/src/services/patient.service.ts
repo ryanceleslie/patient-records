@@ -27,9 +27,8 @@ export class PatientService {
     return this._http.post(this.url + 'api/patient/batch', patients).pipe(catchError(this.handleError));
   }
 
-  editPatientRecord(patient: Patient): Observable<Patient> {
-    //TODO add code for this
-    return new Observable<Patient>;
+  putPatientRecord(patient: Patient): Observable<any> {
+    return this._http.put(this.url + 'api/patient/' + patient.id, patient).pipe(catchError(this.handleError));
   }
 
   // this could be a utility to use elsewhere in the project and something I could move to a custom

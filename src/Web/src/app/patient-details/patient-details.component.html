@@ -1,0 +1,19 @@
+<div mat-dialog-content>
+    <mat-form-field>
+        <input matInput [(ngModel)]="data.firstName" placeholder="First Name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="data.lastName" placeholder="Last Name">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="data.dateOfBirth" placeholder="Birthday">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [(ngModel)]="data.gender" placeholder="Gender">
+    </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancelClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Update</button>
+</div>

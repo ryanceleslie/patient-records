@@ -7,6 +7,8 @@ This application is following the basic principles of CLEAN architecture with co
 
 The eShopOnWeb application from Microsoft recommendation architecture examples was used as a guide for this project and to supplement best practices, that code base can be found here, https://github.com/dotnet-architecture/eShopOnWeb
 
+I am also using TailwindCSS for the CSS options and Materials for the table, filtering, sorting, paging.
+
 ## Running Locally
 
 To get started, create a database in a sql server and construct a connection string. Add that connection string to the appsettings.json file or a local secrets file.
