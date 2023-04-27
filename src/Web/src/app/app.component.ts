@@ -99,6 +99,8 @@ export class AppComponent {
           });
       }
     } finally {
+      // Since I am using the basic input element, need to reset it at this point in case the user uploads the same file
+      // based on name
       input.value = '';
     }
   }

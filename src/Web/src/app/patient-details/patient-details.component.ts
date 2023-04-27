@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Material Imports
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -14,7 +15,7 @@ import { Patient } from 'src/models/patient.model';
 export class PatientDetailsComponent {
   constructor(
     public dialogRef: MatDialogRef<PatientDetailsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Patient) {}
+    @Inject(MAT_DIALOG_DATA) public data: Patient) { }
 
   onCancelClick(): void {
     this.dialogRef.close();

@@ -19,7 +19,7 @@ export class ConvertTextService {
             // object based on a string, so in essence this class can be reused for other conversions 
             // in the program where the JSON object will become a different type.
             let obj: any = new Object();
-            var currentline = lines[i].split(",");
+            var currentValue = lines[i].split(",");
 
             for (var j = 0; j < headers.length; j++) {
                 //TODO check for strings or dates
@@ -38,7 +38,7 @@ export class ConvertTextService {
                     case "Birthday":
                     case "dateOfBirth":
                         headers[j] = "dateOfBirth";
-                        currentline[j] = new Date(currentline[j]).toJSON();
+                        currentValue[j] = new Date(currentValue[j]).toJSON();
                         break;
                     case "Gender":
                     case "gender":
@@ -50,7 +50,7 @@ export class ConvertTextService {
                         return errorObj;
                 }
 
-                obj[headers[j]] = currentline[j];
+                obj[headers[j]] = currentValue[j];
             }    
     
             result.push(obj);

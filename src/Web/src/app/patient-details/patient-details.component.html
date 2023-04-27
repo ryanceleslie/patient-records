@@ -1,15 +1,16 @@
 <div mat-dialog-content>
     <mat-form-field>
-        <input matInput [(ngModel)]="data.firstName" placeholder="First Name">
+        <input matInput [(ngModel)]="data.firstName" placeholder="First Name" id="firstName" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput [(ngModel)]="data.lastName" placeholder="Last Name">
+        <input matInput [(ngModel)]="data.lastName" placeholder="Last Name" id="lastName" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput [(ngModel)]="data.dateOfBirth" placeholder="Birthday">
+        <!-- TODO change this to datepicker -->
+        <input matInput [(ngModel)]="data.dateOfBirth" placeholder="Birthday" id="dateOfBirth" required>
     </mat-form-field>
     <mat-form-field>
-        <input matInput [(ngModel)]="data.gender" placeholder="Gender">
+        <input matInput [(ngModel)]="data.gender" placeholder="Gender" id="gender" maxlength="2" required>
     </mat-form-field>
 </div>
 
