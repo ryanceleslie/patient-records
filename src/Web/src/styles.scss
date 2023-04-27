@@ -4,6 +4,10 @@
 
 @include mat.core();
 
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
 $my-primary: mat.define-palette(mat.$indigo-palette, 500);
 $my-accent: mat.define-palette(mat.$amber-palette, A200, A100, A400);
 
@@ -22,3 +26,6 @@ $my-theme: mat.define-light-theme((
 @tailwind components;
 @tailwind utilities;
 
+mat-icon {
+  cursor: pointer;
+}

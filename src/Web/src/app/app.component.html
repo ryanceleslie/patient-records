@@ -4,7 +4,8 @@
   </h1>
   <p class="mb-6 text-lg p-5 font-normal text-gray-500 lg:text-xl">
     This application showcases patient records pulled from a REST API while allowing for editing of data and bulk upload
-    from a csv file. To get started with the bulk upload, choose a .csv file of preformatted data
+    from a csv file. To get started with the bulk upload, choose a .csv file of preformatted data, here is an example 
+    file to use: <a href="/assets/Patients.csv">Patients.csv</a>
   </p>
 </div>
 
@@ -77,9 +78,16 @@
       </ng-container>
 
       <!-- id column -->
-      <ng-container matColumnDef="id">
+      <!-- <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> Edit </th>
         <td mat-cell *matCellDef="let patient"> {{ patient.id }} </td>
+      </ng-container> -->
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Edit Patient</th>
+        <td mat-cell *matCellDef="let patient">
+          <mat-icon (click)="editPatient(patient)">edit</mat-icon>
+        </td>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -90,8 +98,8 @@
         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
       </tr>
     </table>
-
     
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of patients"></mat-paginator>
   </div>
+
 </div>

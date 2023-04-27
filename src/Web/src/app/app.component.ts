@@ -6,11 +6,13 @@ import { Observable } from 'rxjs'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 // Custom Imports
 import { Patient } from 'src/models/patient.model';
 import { PatientService } from 'src/services/patient.service';
 import { ConvertTextService } from 'src/services/converttext.service';
+import { PatientDetailsComponent } from './patient-details/patient-details.component';
 
 
 @Component({
@@ -21,7 +23,6 @@ import { ConvertTextService } from 'src/services/converttext.service';
 export class AppComponent {
   title = "Patient Records Database";
 
-  public existingpatients: Patient[] = [];
   public uploadedPatientRecords: Patient[] = [];
   public toggleReponseVisibilty: boolean = false;
 
@@ -30,10 +31,14 @@ export class AppComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _patientService: PatientService, private _convertTextService: ConvertTextService, private _httpClient: HttpClient) {
+  constructor(
+    private _patientService: PatientService, 
+    private _convertTextService: ConvertTextService,
+    public dialog: MatDialog) {
+
     // load existing patient records      
     this._patientService.getPatientRecords()
-      .subscribe(patients => {
+      .subscribe((patients: Patient[]) => {
         this.existingPatients = new MatTableDataSource<Patient>(patients);
         
         // Material's documentation has this in the ngAfterViewInit but the paginator and sort properties would be null or empty
@@ -80,8 +85,21 @@ export class AppComponent {
       });
   }
 
-  public async updatePatient(event: any){
-    return null;
+  public async editPatient(patient: Patient){
+    const dialogRef = this.dialog.open(PatientDetailsComponent, {
+      width: '300px',
+      data: patient
+    });
+
+    dialogRef.afterClosed().subscribe(patient => {
+
+      // need this check here in case they hit the cancel button as the .afterClosed() event is executed
+      if (patient != undefined) {
+        // Send an HTTP PUT to update, I feel like this should be 
+        this._patientService.putPatientRecord(patient)
+          .subscribe();
+        }
+    });
   }
 
   public async applyFilter(event: Event) {
