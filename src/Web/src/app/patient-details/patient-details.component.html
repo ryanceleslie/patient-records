@@ -1,20 +1,27 @@
-<div mat-dialog-content>
-    <mat-form-field>
-        <input matInput [(ngModel)]="data.firstName" placeholder="First Name" id="firstName" required>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="data.lastName" placeholder="Last Name" id="lastName" required>
-    </mat-form-field>
-    <mat-form-field>
-        <!-- TODO change this to datepicker -->
-        <input matInput [(ngModel)]="data.dateOfBirth" placeholder="Birthday" id="dateOfBirth" required>
-    </mat-form-field>
-    <mat-form-field>
-        <input matInput [(ngModel)]="data.gender" placeholder="Gender" id="gender" maxlength="2" required>
-    </mat-form-field>
-</div>
 
-<div mat-dialog-actions>
-    <button mat-button (click)="onCancelClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Update</button>
-</div>
+    <div mat-dialog-content [formGroup]="patientDetailsEditForm">
+        <mat-form-field>
+            <mat-label>Enter first name</mat-label>
+            <input matInput [(ngModel)]="patient.firstName" formControlName="firstName" required>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Enter last name</mat-label>
+            <input matInput [(ngModel)]="patient.lastName" formControlName="lastName" required>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Choose a birth date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="patient.dateOfBirth" formControlName="dateOfBirth" required/>
+            <mat-hint>mm/dd/yyyy</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Enter gender</mat-label>
+            <input matInput [(ngModel)]="patient.gender" formControlName="gender" maxlength="2" required>
+        </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+        <button mat-button (click)="onCancelClick()">Cancel</button>
+        <button mat-button (click)="onUpdateClick()">Update</button>
+    </div>
