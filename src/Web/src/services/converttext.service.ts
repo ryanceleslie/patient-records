@@ -22,10 +22,7 @@ export class ConvertTextService {
             var currentValue = lines[i].split(",");
 
             for (var j = 0; j < headers.length; j++) {
-                //TODO check for strings or dates
-
                 //TODO get this out of here
-                // validate input here
                 switch (headers[j]) {
                     case "First Name":
                     case "firstName":

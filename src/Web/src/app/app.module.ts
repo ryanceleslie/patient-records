@@ -18,7 +18,7 @@ import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import{ MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 
 // custom classes
@@ -35,6 +35,7 @@ import { PatientDetailsComponent } from './patient-details/patient-details.compo
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     MatTableModule,
     MatInputModule,
